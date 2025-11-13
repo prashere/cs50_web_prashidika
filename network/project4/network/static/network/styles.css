@@ -1,0 +1,40 @@
+.card,.center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.center{
+    padding-bottom: 10px;
+    font-size: 19px;
+    letter-spacing: 1px;
+    font-family:'Times New Roman', Times, serif;
+    font-weight: 600;
+}
+.card-title{
+    font-size: 20px;
+    font-weight: 600;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#title{
+    text-decoration: none;
+    color: black;
+}
+.content{
+    font-size: 15px;
+    font-family: monospace;
+}
+.timestamp{
+    color: grey;
+}
+.fa-heart{
+    font-size: 20px;
+    color:rgb(188, 0, 0);
+    cursor: pointer;
+}
+.page-link{
+    text-decoration: none;
+    color:rgb(29, 89, 194);
+    font-family: monospace;
+    font-size: 16px;
+}

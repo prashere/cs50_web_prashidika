@@ -1,0 +1,65 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block head %}
+<script src="{% static 'network/network.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<h1 style="text-align: center;">All Posts</h1>
+{% if user.is_authenticated %}
+<div class="card">
+    <form class="card-body" id="createPost">
+        <p class="card-title">New Post</p>
+        <textarea rows="5" cols="50" name="content" id="content" placeholder="Type something" required></textarea>
+        <br>
+        <input type="submit" id="submit" class="btn btn-primary">
+    </form>
+</div>
+{% endif %}
+{% for post in page %}
+<div class="card">
+    <div class="card-body">
+        <p class="card-title">
+            <a id="title" href="{% url 'profile' post.creator %}">{{post.creator}}</a>
+        </p>
+        <p class="content" id="content-{{post.id}}">{{post.content}}</p>
+        <span class="timestamp">{{post.created_at}}</span><br>
+        
+        <textarea rows="8" cols="40" id="txtarea-{{post.id}}" style="display: none;"></textarea>
+        <!--Hiding the textarea initially so as to only show it on the click of Edit button -->
+        {% if user.is_authenticated %}
+        <i class="fa-regular fa-heart" id="heart" data-post-id="{{post.id}}" data-user-id="{{user.id}}" data-liked="false"></i>
+        {% endif %}
+        <div id="like_holder" data-post-id="{{post.id}}">Likes:
+        <p style="display: inline; font-weight: bold;" id="like-count-{{post.id}}"></p>
+        </div>
+        <br><br>
+        {% if post.creator == user %}
+            <div class="edit btn btn-danger" id="edit-{{post.id}}" data-post-id="{{post.id}}">Edit</div>
+            <div class="btn btn-success" style="display:none;" id="save-{{post.id}}">Save</div>
+            <!--Hiding the Save button initially so as to only show it on the click of Edit button -->
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+<!-- Paginator implementation -->
+<nav class='center' aria-label="Page navigation" style="margin:30px 0px;">
+    <ul class="pagination">
+        {% if page.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a>
+        </li>
+        {% endif %}
+        <li class="page-item active">
+            <span class="page-link">{{ page.number }}</span>
+        </li>
+        {% if page.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page.next_page_number }}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}
