@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Closed Listings</h2>
+<br>
+<div class="container">
+    <div class="row">
+        {% for item in listings %}
+        <div class="col-6 col-md-4 box"
+            style="padding: 30px; display: flex; flex-direction: column; align-items: center;">
+            <h5>{{item.title}}</h5>
+            {% if item.image %}
+            <img class="img-fluid" src="{{item.image}}.url" alt="{{item.title}}">
+            {% endif %}
+            <div class="lower" style="margin-top: auto;">
+                <p class="description">{{item.description}}</p>
+                <h6>Price : $ {{item.price}}</h6>
+                {% if item.category %}
+                <h6>Category: {{item.category}}</h6>
+                {% endif %}
+                <p class="description" style="letter-spacing: 0px;">Created on : {{item.created_at}}</p>
+                <a class="view-btn" href="{% url 'individual_listing' item.id item.title %}">View Listing</a>
+                <div class="btn btn-danger">Closed</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

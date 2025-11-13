@@ -1,0 +1,137 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+{% if message %}
+<h6>{{message}}</h6>
+{% else %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 indi-desc" style="align-items: center;">
+            <h4>{{item.title}}</h4>
+            <img class="img-fluid" src="{{item.image}}" alt="{{item.title}}">
+        </div>
+        <div class="col-md-6 indi-desc">
+            {% if user.is_authenticated %}
+            <form action="{% url 'toggle' item.id item.title %}" method="post">
+                {% csrf_token %}
+                {% if not item.is_closed %}
+                <button type="submit" name="add-remove" class="view-btn" style="margin-bottom: 30px;">
+                    {% if found_listing %}
+                    Remove from Watchlist
+                    {% else %}
+                    Add to Watchlist
+                    {% endif %}
+                </button>
+                {% endif %}
+            </form>
+            {% endif %}
+            <p class="description">Owner: {{item.owner}}<br>
+                Created on : {{item.created_at}}<br><br>
+                {{item.description}}
+            </p>
+            <p class="description" style="font-size: 18px;">
+                {% if item.is_closed %}
+                <span class="description" style="font-size: 15px; font-weight: 600; color: brown;">
+                    Status : CLOSED
+                </span>
+                {% else %}
+                <span class="description" style="font-size: 15px; font-weight: 600; color: green;">
+                    Status : ACTIVE
+                </span>
+                {% endif %}
+                <br>
+                {% if item.category %}
+                Category: {{item.category}}<br>
+                {% else %}
+                Category: Not Mentioned<br>
+                {% endif %}
+                Starting Bid : ${{item.starting_bid}}
+            </p>
+            <h5> Current Price : <span class="price"> $ {{item.price}}</span></h5>
+            {% if user.is_authenticated %}
+            <p class="bid_text">
+                {% if not item.is_closed %}
+                {% if bids_count == 0 %}
+                {% if not is_owner %}
+                Make the first bid!
+                {% else %}
+                No bids made
+                {% endif%}
+                {% else %}
+                {{ bids_count }} bid{{ bids_count|pluralize:"s" }} already made!<br>
+                {% for bid in bids %}
+                <span class="bidder_info">
+                    Bid:{{bid.bid_price}} &nbsp;&nbsp; Placed on:{{bid.bid_at}}(by {{bid.bidder}})<br>
+                </span>
+                {% endfor %}
+                {% endif %}
+                {% endif %}
+            </p>
+            <h6 style="color:brown;">
+                {% if messages %}
+                {% for message in messages %}
+                <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+                {% endfor %}
+                {% endif %}
+            </h6>
+            {% if not is_owner %}
+            {% if item.is_closed %}
+            {% if item.winner == user %}
+            <h6 class="win">YOU WON THE AUCTION !</h6>
+            {% endif %}
+            {% else %}
+            <form action="{% url 'individual_listing' item.id item.title %}" method="post">
+                {% csrf_token %}
+                <label for="new_bid"> Enter bid :</label>
+                <input type="number" step="0.01" min="0" name="new_bid" placeholder="Bid" required>
+                <input type="hidden" name="action" value="bid">
+                <button type="submit" class="view-btn">Place Bid</button>
+            </form>
+            {% endif %}
+            {% else %}
+            <form action="{% url 'individual_listing' item.id item.title %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="close">
+                <button type="submit" name="close_listing" class="view-btn"
+                    style="background-color: rgb(128, 5, 5);">Close Listing</button>
+            </form>
+            {% endif %}
+            {% if item.is_closed %}
+            <h6> Auction closed !</h6>
+            {% if item.winner == item.owner %}
+            <p class="winner">No biddings made! No winner</p>
+            {% else %}
+            <p class="winner">Winner : {{item.winner}}</p>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    <div class="row" style="padding:50px; flex-direction: column;">
+        <h1>Comments</h1>
+        {% if user.is_authenticated %}
+        {% if not item.is_closed %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="text" name="comment" placeholder="Enter a comment">
+            <input type="hidden" name="action" value="comment-check">
+            <input class="view-btn" type="submit" value="Post">
+        </form>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% if not all_comments %}
+    <div class="row" style="padding-left: 50px;">
+        No comments made yet!
+    </div>
+    {% else %}
+    {% for comment in all_comments %}
+    <div class="row cmnt" style="padding-left:50px; flex-direction: column;">
+        <b class="comment"> {{comment.comment_text }}</b>
+        <p class="description">Posted by {{comment.user}} &nbsp;&nbsp; {{comment.comment_at}}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

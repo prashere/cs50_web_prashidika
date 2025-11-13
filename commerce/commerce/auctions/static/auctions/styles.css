@@ -1,0 +1,78 @@
+.main-body{
+    padding: 50px;
+}
+.create-label,.submit-btn{
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 2px;
+}
+.box{
+    border: 1px solid rgb(218, 206, 206);
+    padding:15px;
+}
+.description,.bid_text,.bidder_info{
+    font-size: 15px;
+    letter-spacing: 1px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(77, 75, 75);
+}
+.submit-btn,.view-btn{
+    font-size: 14px;
+    background-color:rgb(14, 92, 160);
+    padding: 10px;
+    color:white;
+    border:solid 1px white;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.view-btn{
+    text-decoration: none;
+    font-weight: 600;
+}
+.view-btn:hover{
+    color: white;
+}
+.indi-desc{
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+}
+.price{
+    font-size: 28px;
+    font-weight: 600px;
+    color: rgb(41, 38, 38);
+}
+.bid_text{
+    color:rgb(13, 160, 223);
+    font-size: 16px;
+}
+.bidder_info{
+    font-size: 14px;
+}
+.win{
+    color:brown;
+    font-weight: 700;
+}
+.winner{
+    font-size: 16px;
+    color: rgb(7, 89, 100);
+}
+.cmnt{
+    border-bottom: 1px solid rgb(218, 206, 206);
+}
+.category-btn{
+    background-color: rgb(184, 177, 177);
+    margin-right: 20px;
+    border-radius: 5px;
+}
+.category-text{
+    color:black;
+}
+.category-btn:hover, .category-btn.active{
+    background-color: rgb(211, 203, 203);
+}
+.category-btn:hover a, .category-btn.active a{
+    color: black;
+    font-weight: 600;
+}
